@@ -1,21 +1,10 @@
-"use strict";
+const readline = require('readline');
+const rl = readline.createInterface(process.stdin, process.stdout);
+rl.on('line', (line) => {
+    // Введенная строка в переменной line, тут можно написать решение
+    //
+    let result = getAnswer(line);
 
-//
-// cases: +
-// const line = "ааббдд ддббаа";
-// const line = "привет прикол";
-// const line = "кубик кабак";
-//
-// cases: -
-// const line = 'абаб ааах';
-// const line = "кубик кабан";
-//
-
-const line = "кубик кабак";
-
-let result = getAnswer(line);
-console.log(line);
-console.log(result);
 
 function getAnswer(string) {
   const substrings = string.split(" "); //разделяем строку на подстроки через пробел
@@ -49,6 +38,7 @@ function isStringsModified(string1, string2) {
     )
   );
 }
+
 //возвращает "отпечаток" строки - массив с массивами индексов вхождения каждой буквы
 function getSubstringStamp(string) {
   //приводим строку к массиву
@@ -73,4 +63,10 @@ function getSubstringStamp(string) {
     stamps.push(stamp);
   }
   return stamps;
-}
+} 
+    // 
+    
+    console.log(String(result));
+    rl.close();
+    return;
+}).on('close', () => process.exit(0));
