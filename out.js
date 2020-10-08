@@ -3,6 +3,8 @@ const rl = readline.createInterface(process.stdin, process.stdout);
 rl.on('line', (line) => {
     // Введенная строка в переменной line, тут можно написать решение
     //
+    // 
+    // 
     let result = getAnswer(line);
 
 
@@ -65,7 +67,9 @@ function getSubstringStamp(string) {
   return stamps;
 } 
     // 
-    
+    // 
+    // 
+    //     
     console.log(String(result));
     rl.close();
     return;
