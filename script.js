@@ -9,9 +9,12 @@
 // cases: -
 // const line = 'абаб ааах';
 // const line = "кубик кабан";
+// const line = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя аавгдеёжзийклмнопрстуфхцчшщъыьэюя";
 //
 
-const line = "кубик кабак";
+// const line = "кубик кабак";
+
+const line = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя аавгдеёжзийклмнопрстуфхцчшщъыьэюя";
 
 let result = getAnswer(line);
 console.log(line);
@@ -29,6 +32,9 @@ function getAnswer(string) {
 
 //возвращает true если string1 можно преобразовать в string2
 function isStringsModified(string1, string2) {
+  if (string1 === string2) {
+    return true;
+  }
   //если строки разной длины, то строку пробразовать не получится
   if (string1.length !== string2.length) {
     return false;
@@ -40,6 +46,11 @@ function isStringsModified(string1, string2) {
   const repeatedLettersPos = firstStringStamp.filter(
     (stamp) => stamp.length > 1
   );
+
+  if ((string1.length >= 33) && (repeatedLettersPos.length ===0)) {
+    return false;
+  }
+
   // для каждой повторяющейся буквы из первой строки проверяем,
   // что в "отпечатках" второй строки есть такой массив,
   // который содержит все индексы повторяющейся буквы из первой строки
