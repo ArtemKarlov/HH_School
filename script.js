@@ -46,7 +46,8 @@ function isStringsModified(string1, string2) {
   const repeatedLettersPos = firstStringStamp.filter(
     (stamp) => stamp.length > 1
   );
-
+    // если в первой строке нет повторяющихся букв 
+    // и длина строки больше количества допустимых символов - не получится заменить
   if ((string1.length >= 33) && (repeatedLettersPos.length ===0)) {
     return false;
   }
