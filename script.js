@@ -5,20 +5,22 @@
 // const line = "ааббдд ддббаа";
 // const line = "привет прикол";
 // const line = "кубик кабак";
+// const line = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя ааягдеёжзийклмнопрстуфхцчшщъыьэяю";
 //
 // cases: -
 // const line = 'абаб ааах';
 // const line = "кубик кабан";
-// const line = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя аавгдеёжзийклмнопрстуфхцчшщъыьэюя";
+// const line = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя яюэьыъщшчцхфутсрпонмлкйизжёедгвба";
 //
 
 // const line = "кубик кабак";
 
-const line = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя аавгдеёжзийклмнопрстуфхцчшщъыьэюя";
+const line = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяа яяюэьыъщшчцхфутсрпонмлкйизжёедгвбя";
 
 let result = getAnswer(line);
 console.log(line);
 console.log(result);
+console.log((Array.from("абвгдеёжзийклмнопрстуфхцчшщъыьэюя").reverse()).join(''));
 
 function getAnswer(string) {
   const substrings = string.split(" "); //разделяем строку на подстроки через пробел
@@ -46,9 +48,12 @@ function isStringsModified(string1, string2) {
   const repeatedLettersPos = firstStringStamp.filter(
     (stamp) => stamp.length > 1
   );
+  const secondRepeatedLettersPos = secondStringStamp.filter(
+    (stamp) => stamp.length > 1
+  );
     // если в первой строке нет повторяющихся букв 
     // и длина строки больше количества допустимых символов - не получится заменить
-  if ((string1.length >= 33) && (repeatedLettersPos.length ===0)) {
+  if ((string1.length >= 33) && (repeatedLettersPos.length === 0) && (secondRepeatedLettersPos.length === 0)) {
     return false;
   }
 
