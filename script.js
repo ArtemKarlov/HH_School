@@ -15,12 +15,12 @@
 
 // const line = "кубик кабак";
 
-const line = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяа яяюэьыъщшчцхфутсрпонмлкйизжёедгвбя";
+const line =
+  "01234 01233";
 
 let result = getAnswer(line);
 console.log(line);
 console.log(result);
-console.log((Array.from("абвгдеёжзийклмнопрстуфхцчшщъыьэюя").reverse()).join(''));
 
 function getAnswer(string) {
   const substrings = string.split(" "); //разделяем строку на подстроки через пробел
@@ -35,36 +35,67 @@ function getAnswer(string) {
 //возвращает true если string1 можно преобразовать в string2
 function isStringsModified(string1, string2) {
   if (string1 === string2) {
+    console.log('equal test true');
     return true;
   }
   //если строки разной длины, то строку пробразовать не получится
   if (string1.length !== string2.length) {
-    return false;
-  }
-  //получаем "отпечатки" строк
-  const firstStringStamp = getSubstringStamp(string1);
-  const secondStringStamp = getSubstringStamp(string2);
-  //выбираем из "отпечатка" первой строки индексы повторяющихся букв
-  const repeatedLettersPos = firstStringStamp.filter(
-    (stamp) => stamp.length > 1
-  );
-  const secondRepeatedLettersPos = secondStringStamp.filter(
-    (stamp) => stamp.length > 1
-  );
-    // если в первой строке нет повторяющихся букв 
-    // и длина строки больше количества допустимых символов - не получится заменить
-  if ((string1.length >= 33) && (repeatedLettersPos.length === 0) && (secondRepeatedLettersPos.length === 0)) {
+    console.log('length test false');
     return false;
   }
 
-  // для каждой повторяющейся буквы из первой строки проверяем,
-  // что в "отпечатках" второй строки есть такой массив,
-  // который содержит все индексы повторяющейся буквы из первой строки
-  return repeatedLettersPos.every((letterPos) =>
-    secondStringStamp.some((secondStamp) =>
-      letterPos.every((pos) => secondStamp.includes(pos))
-    )
-  );
+  loop1: for (let i = 0; i < string1.length; i++) {
+    let repeatedLetters = [];
+    if (repeatedLetters.includes(string1[i])) {
+      continue loop1;
+    }
+    for (let j = i + 1; j < string1.length; j++) {
+      if (string1[i] === string1[j] && 
+        string2[i] === string2[j]) {
+        repeatedLetters.push(string1[i]);
+      }
+      if (string1[i] === string1[j] && 
+        string2[i] !== string2[j]) {
+          console.log('cross equal test false');
+          return false;
+        }
+    }
+  }
+  console.log('final test true');
+  return true;
+  // если длина >= 33 и нет повторений в обоих словах -> 0
+  // если длина >= 33 но есть повторения -> следующая проверка
+  // если в 1 есть повторяющиеся но во 2 на этих позициях не повторяются -> 0
+  
+
+  // //получаем "отпечатки" строк
+  // const firstStringStamp = getSubstringStamp(string1);
+  // const secondStringStamp = getSubstringStamp(string2);
+  // //выбираем из "отпечатка" первой строки индексы повторяющихся букв
+  // const repeatedLettersPos = firstStringStamp.filter(
+  //   (stamp) => stamp.length > 1
+  // );
+  // const secondRepeatedLettersPos = secondStringStamp.filter(
+  //   (stamp) => stamp.length > 1
+  // );
+  // // если в первой строке нет повторяющихся букв
+  // // и длина строки больше количества допустимых символов - не получится заменить
+  // if (
+  //   string1.length >= 33 &&
+  //   repeatedLettersPos.length === 0 &&
+  //   secondRepeatedLettersPos.length === 0
+  // ) {
+  //   return false;
+  // }
+
+  // // для каждой повторяющейся буквы из первой строки проверяем,
+  // // что в "отпечатках" второй строки есть такой массив,
+  // // который содержит все индексы повторяющейся буквы из первой строки
+  // return repeatedLettersPos.every((letterPos) =>
+  //   secondStringStamp.some((secondStamp) =>
+  //     letterPos.every((pos) => secondStamp.includes(pos))
+  //   )
+  // );
 }
 //возвращает "отпечаток" строки - массив с массивами индексов вхождения каждой буквы
 function getSubstringStamp(string) {
