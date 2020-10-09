@@ -1,5 +1,7 @@
 "use strict";
 
+const ALPHABET_LENGTH = 5;
+
 //
 // cases: +
 // const line = "ааббдд ддббаа";
@@ -8,15 +10,12 @@
 // const line = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя ааягдеёжзийклмнопрстуфхцчшщъыьэяю";
 //
 // cases: -
-// const line = 'абаб ааах';
+// const line = "абаб ааах";
 // const line = "кубик кабан";
 // const line = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя яюэьыъщшчцхфутсрпонмлкйизжёедгвба";
 //
 
-// const line = "кубик кабак";
-
-const line =
-  "01234 01233";
+const line = "0123 3210";
 
 let result = getAnswer(line);
 console.log(line);
@@ -35,38 +34,58 @@ function getAnswer(string) {
 //возвращает true если string1 можно преобразовать в string2
 function isStringsModified(string1, string2) {
   if (string1 === string2) {
-    console.log('equal test true');
+    console.log("equal test true");
     return true;
   }
   //если строки разной длины, то строку пробразовать не получится
   if (string1.length !== string2.length) {
-    console.log('length test false');
+    console.log("length test false");
     return false;
   }
 
+  let firstStringRepeatedLetters = [];
+  let secondStringRepeatedLetters = [];
+
   loop1: for (let i = 0; i < string1.length; i++) {
-    let repeatedLetters = [];
-    if (repeatedLetters.includes(string1[i])) {
+    if (firstStringRepeatedLetters.includes(string1[i])) {
       continue loop1;
     }
-    for (let j = i + 1; j < string1.length; j++) {
-      if (string1[i] === string1[j] && 
-        string2[i] === string2[j]) {
-        repeatedLetters.push(string1[i]);
-      }
-      if (string1[i] === string1[j] && 
-        string2[i] !== string2[j]) {
-          console.log('cross equal test false');
-          return false;
-        }
+
+    if (
+      i == ALPHABET_LENGTH - 1 &&
+      (
+        (firstStringRepeatedLetters.length === 0 && secondStringRepeatedLetters.length === 0) 
+      // || (firstStringRepeatedLetters.length !== 0 && secondStringRepeatedLetters.length === 0)
+      )
+    ) {
+      console.log("33 and repaed test false");
+      return false;
     }
+
+    for (let j = i + 1; j < string1.length; j++) {
+      let isString2PairEqual = false;
+      if (string2[i] === string2[j]) {
+        isString2PairEqual = true;
+        secondStringRepeatedLetters.push(string2[i]);
+      }
+
+      if (string1[i] === string1[j]) {
+        if (!isString2PairEqual) {
+          console.log("cross equal test false");
+          return false;
+        } else {
+          firstStringRepeatedLetters.push(string1[i]);
+        }
+      }
+    }
+
+    
   }
-  console.log('final test true');
+  console.log("final test true");
   return true;
   // если длина >= 33 и нет повторений в обоих словах -> 0
   // если длина >= 33 но есть повторения -> следующая проверка
   // если в 1 есть повторяющиеся но во 2 на этих позициях не повторяются -> 0
-  
 
   // //получаем "отпечатки" строк
   // const firstStringStamp = getSubstringStamp(string1);
