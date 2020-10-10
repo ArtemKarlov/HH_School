@@ -1,6 +1,6 @@
 "use strict";
 
-const ALPHABET_LENGTH = 5;
+const ALPHABET_LENGTH = 10;
 
 //
 // cases: +
@@ -15,7 +15,7 @@ const ALPHABET_LENGTH = 5;
 // const line = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя яюэьыъщшчцхфутсрпонмлкйизжёедгвба";
 //
 
-const line = "0123 3210";
+const line = "012345681789 987654318210";
 
 let result = getAnswer(line);
 console.log(line);
@@ -34,53 +34,69 @@ function getAnswer(string) {
 //возвращает true если string1 можно преобразовать в string2
 function isStringsModified(string1, string2) {
   if (string1 === string2) {
-    console.log("equal test true");
+    console.log("string equal test true");
     return true;
   }
   //если строки разной длины, то строку пробразовать не получится
   if (string1.length !== string2.length) {
-    console.log("length test false");
+    console.log("string length test false");
     return false;
   }
 
   let firstStringRepeatedLetters = [];
   let secondStringRepeatedLetters = [];
 
+  let firstStringUniqueLetters = [];
+  let secondStringUniqueLetters = [];
+
   loop1: for (let i = 0; i < string1.length; i++) {
     if (firstStringRepeatedLetters.includes(string1[i])) {
       continue loop1;
     }
 
-    if (
-      i == ALPHABET_LENGTH - 1 &&
-      (
-        (firstStringRepeatedLetters.length === 0 && secondStringRepeatedLetters.length === 0) 
-      // || (firstStringRepeatedLetters.length !== 0 && secondStringRepeatedLetters.length === 0)
-      )
-    ) {
-      console.log("33 and repaed test false");
-      return false;
-    }
+    // if (
+    //   i == ALPHABET_LENGTH - 1 &&
+    //   firstStringRepeatedLetters.length === 0 &&
+    //   secondStringRepeatedLetters.length === 0
+    //   // || (firstStringRepeatedLetters.length !== 0 && secondStringRepeatedLetters.length === 0)
+    // ) {
+    //   console.log("33 and repaed test false");
+    //   return false;
+    // }
 
     for (let j = i + 1; j < string1.length; j++) {
       let isString2PairEqual = false;
       if (string2[i] === string2[j]) {
         isString2PairEqual = true;
-        secondStringRepeatedLetters.push(string2[i]);
+        if (!secondStringRepeatedLetters.includes(string2[i])) {
+          secondStringRepeatedLetters.push(string2[i]);
+        }
       }
 
       if (string1[i] === string1[j]) {
         if (!isString2PairEqual) {
           console.log("cross equal test false");
           return false;
-        } else {
+        } else if (!firstStringRepeatedLetters.includes(string1[i])) {
           firstStringRepeatedLetters.push(string1[i]);
         }
+      } else {
+        
       }
-    }
 
-    
+    }
+  
+  
+  
   }
+
+  
+
+
+
+  console.log(firstStringRepeatedLetters);
+  console.log(secondStringRepeatedLetters);
+
   console.log("final test true");
   return true;
   // если длина >= 33 и нет повторений в обоих словах -> 0
