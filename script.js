@@ -15,7 +15,6 @@
 
 const line = "01234567890123 98765432109876";
 
-
 const ALPHABET_LENGTH = 33;
 
 let result = getAnswer(line);
@@ -35,12 +34,12 @@ function getAnswer(string) {
 //возвращает true если string1 можно преобразовать в string2
 function isStringsModified(string1, string2) {
   if (string1 === string2) {
-    // console.log("string equal test true");
+    console.log("string equal test true");
     return true;
   }
   //если строки разной длины, то строку пробразовать не получится
   if (string1.length !== string2.length) {
-    // console.log("string length test false");
+    console.log("string length test false");
     return false;
   }
 
@@ -88,5 +87,15 @@ function isStringsModified(string1, string2) {
       return false;
     }
   }
+
+  console.log("ALPHABET_LENGTH: " + ALPHABET_LENGTH);
+  console.log("string1.length: " + string1.length);
+  console.log("UniqueLetters.length: " + firstStringUniqueLetters.length);
+  console.log(firstStringUniqueLetters);
+  console.log(secondStringUniqueLetters);
+  console.log(firstStringRepeatedLetters);
+  console.log(secondStringRepeatedLetters);
+
+  console.log("final test true");
   return true;
 }
