@@ -13,12 +13,12 @@
 
 // const line = `5
 // 1595862781 1595862783
-// 1595862781 1595862785
+// 1595862781 1595862786
 // 1595862782 1595862784
-// 159586278 1595862784
-// 1595862785 1595862787`;
+// 1595862785 1595862787
+// 1595862788 1595862789`;
 
-// const line = `4
+// const line = `5
 // 1595862781 1595862783
 // 1595862782 1595862788
 // 1595862784 1595862789
@@ -35,18 +35,18 @@
 // 107 109`;
 
 // const line = `3
-// 101 103
-// 101 103
-// 107 109`;
+// 101 104
+// 102 106
+// 103 104
+// 105 108`;
 
 const line = `6
 100 102
-100 103
 100 102
-102 104
+100 102
 103 104
 103 104
-105 105`;
+103 104`;
 
 const result = getResult(line);
 
@@ -98,55 +98,35 @@ function reduceIntervals(array) {
 
 
 function findeIntervalsIntresections(array) {
-
-    let findedIntervals = [...array];
-
-    let i = 0,
-        j = i + 1;
-
-
-    const intersectionOfTwoIntervals = getIntersectionOfTwoIntervals(findedIntervals[i], findedIntervals[j]);
-    const isIntervalsIntersect = (intersectionOfTwoIntervals.length != 0) ? true : false;
-    if (isIntervalsIntersect) {
-        findedIntervals.splice(i, 2, intersectionOfTwoIntervals);
-        findedIntervals = [...findeIntervalsIntresections(findedIntervals)];
+    let findedIntervals = [];
+    const lastIntervalIndex = array.length - 1;
+    let isIntersectionFinded = false;
+    let hasIntersection = false;
+    
+    if (array.length == 1) {
+        findedIntervals.push(...array);
     } else {
-        // i++;
-        // j++;
-        // console.log(i + " " + j);
+        for (let i = 0; i < lastIntervalIndex; i++) {
+            const j = i + 1;
+            const intersectionOfTwoIntervals = getIntersectionOfTwoIntervals(array[i], array[j]);
+            if (intersectionOfTwoIntervals.length != 0) {
+                findedIntervals.push(intersectionOfTwoIntervals);
+                isIntersectionFinded = true;
+                hasIntersection = true;
+            }
+            else {
+                (!hasIntersection) ? 
+                    findedIntervals.push(array[i]) : 
+                    hasIntersection = false;
+                if (j == lastIntervalIndex) findedIntervals.push(array[j]);
+                
+            }
+        }
+    } 
+
+    if (isIntersectionFinded) {
+        findedIntervals = findeIntervalsIntresections(findedIntervals);
     }
-    
-
-
-    // const findedIntervals = [];
-    // const lastIntervalIndex = array.length - 1;
-    // let isIntersectionFinded = false;
-    
-    // if (array.length == 1) {
-    //     findedIntervals.push(...array);
-    // } else {
-    //     loop1:  for (let i = 0; i < lastIntervalIndex; i++) {
-    //         const j = i + 1;
-    //         if (isArraysEqual(array[i], array[j])) {
-    //             continue loop1;
-    //         }
-    //         const intersectionOfTwoIntervals = getIntersectionOfTwoIntervals(array[i], array[j]);
-    //         const isIntervalsIntersect = (intersectionOfTwoIntervals.length != 0) ? true : false;
-    //         if (isIntervalsIntersect) {
-    //             findedIntervals.push(intersectionOfTwoIntervals);
-    //             isIntersectionFinded = true;                          
-    //         } else {
-    //             findedIntervals.push(array[i]);
-    //             if (j == lastIntervalIndex) findedIntervals.push(array[j]);
-    //         }
-    //     }
-    // }    
-
-    // if (isIntersectionFinded) {
-    //     const oldArrayLangth = findedIntervals.length;
-    //     findedIntervals.push(findeIntervalsIntresections(findedIntervals));
-    //     findedIntervals.splice(0, oldArrayLangth);
-    // }
 
     return findedIntervals;
 }
@@ -181,13 +161,13 @@ function sortIntervals(array) {
 }
 
 
-function getIntersectionOfIntervals(array) {
-    const result = array.reduce((intersectionArray, currentArray) => {
-        return getIntersectionOfTwoIntervals(intersectionArray, currentArray);
-    });
+// function getIntersectionOfIntervals(array) {
+//     const result = array.reduce((intersectionArray, currentArray) => {
+//         return getIntersectionOfTwoIntervals(intersectionArray, currentArray);
+//     });
 
-    return result;
-}
+//     return result;
+// }
 
 
 function getIntersectionOfTwoIntervals(arrA, arrB) {
