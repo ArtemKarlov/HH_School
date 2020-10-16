@@ -39,10 +39,14 @@
 // 101 103
 // 107 109`;
 
-const line = `4
-101 103
+const line = `6
+100 102
+100 103
+100 102
 102 104
-107 109`;
+103 104
+103 104
+105 105`;
 
 const result = getResult(line);
 
@@ -52,7 +56,8 @@ function getResult(line) {
     const parsedLine = parseLine(line);
     let intervals = parsedLine.slice(1);
 
-    intervals = getSortedIntervals(intervals);
+    intervals = sortIntervals(intervals);
+    intervals = reduceIntervals(intervals);
 
     const timeSets = intervals.map(interval => {
         return fillInterval(interval);
@@ -60,45 +65,88 @@ function getResult(line) {
 
     const findedIntervals = findeIntervalsIntresections(timeSets);
     
-    console.log(findedIntervals);
+console.log(timeSets);
+console.log(findedIntervals);
 
     const findedIntervalsCount = findedIntervals.length;
     const findedIntervalsDuration = findedIntervals.reduce((sumDuration, interval) => sumDuration + interval.length, 0);
     
-    return [findedIntervalsCount, findedIntervalsDuration];
+    return [findedIntervalsCount, findedIntervalsDuration].join(' ');
+}
+
+
+
+function reduceIntervals(array) {
+    const arr = [...array]
+    const result = [];
+
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === undefined) {
+            continue;
+        } else {
+            result.push(arr[i]);
+        }
+        for (let j = (i + 1); j < arr.length; j++) {
+            if (isArraysEqual(arr[i], arr[j])) {
+                arr[j] = undefined;
+            }
+        }        
+    }
+
+    return result;
 }
 
 
 function findeIntervalsIntresections(array) {
-    const findedIntervals = [];
-    const lastIntervalIndex = array.length - 1;
-    let isIntersectionFinded = false;
-    
-    if (array.length == 1) {
-        findedIntervals.push(...array);
-    } else {
-        loop1:  for (let i = 0; i < lastIntervalIndex; i++) {
-            const j = i + 1;
-            if (isArraysEqual(array[i], array[j])) {
-                continue loop1;
-            }
-            const intersectionOfTwoIntervals = getIntersectionOfTwoIntervals(array[i], array[j]);
-            const isIntervalsIntersect = (intersectionOfTwoIntervals.length != 0) ? true : false;
-            if (isIntervalsIntersect) {
-                findedIntervals.push(intersectionOfTwoIntervals);
-                isIntersectionFinded = true;                          
-            } else {
-                // findedIntervals.push(array[i]);
-                if (j == lastIntervalIndex) findedIntervals.push(array[j]);
-            }
-        }
-    }    
 
-    if (isIntersectionFinded) {
-        const oldArrayLangth = findedIntervals.length;
-        findedIntervals.push(findeIntervalsIntresections(findedIntervals));
-        // findedIntervals.splice(0, oldArrayLangth);
+    let findedIntervals = [...array];
+
+    let i = 0,
+        j = i + 1;
+
+
+    const intersectionOfTwoIntervals = getIntersectionOfTwoIntervals(findedIntervals[i], findedIntervals[j]);
+    const isIntervalsIntersect = (intersectionOfTwoIntervals.length != 0) ? true : false;
+    if (isIntervalsIntersect) {
+        findedIntervals.splice(i, 2, intersectionOfTwoIntervals);
+        findedIntervals = [...findeIntervalsIntresections(findedIntervals)];
+    } else {
+        // i++;
+        // j++;
+        // console.log(i + " " + j);
     }
+    
+
+
+    // const findedIntervals = [];
+    // const lastIntervalIndex = array.length - 1;
+    // let isIntersectionFinded = false;
+    
+    // if (array.length == 1) {
+    //     findedIntervals.push(...array);
+    // } else {
+    //     loop1:  for (let i = 0; i < lastIntervalIndex; i++) {
+    //         const j = i + 1;
+    //         if (isArraysEqual(array[i], array[j])) {
+    //             continue loop1;
+    //         }
+    //         const intersectionOfTwoIntervals = getIntersectionOfTwoIntervals(array[i], array[j]);
+    //         const isIntervalsIntersect = (intersectionOfTwoIntervals.length != 0) ? true : false;
+    //         if (isIntervalsIntersect) {
+    //             findedIntervals.push(intersectionOfTwoIntervals);
+    //             isIntersectionFinded = true;                          
+    //         } else {
+    //             findedIntervals.push(array[i]);
+    //             if (j == lastIntervalIndex) findedIntervals.push(array[j]);
+    //         }
+    //     }
+    // }    
+
+    // if (isIntersectionFinded) {
+    //     const oldArrayLangth = findedIntervals.length;
+    //     findedIntervals.push(findeIntervalsIntresections(findedIntervals));
+    //     findedIntervals.splice(0, oldArrayLangth);
+    // }
 
     return findedIntervals;
 }
@@ -125,7 +173,7 @@ function fillInterval(interval) {
 }
 
 
-function getSortedIntervals(array) {
+function sortIntervals(array) {
     const sortedArray = [...array];
     sortedArray.sort((intervalA, intervalB) => intervalA[0] - intervalB[0]);
 
