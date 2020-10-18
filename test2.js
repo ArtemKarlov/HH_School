@@ -3,13 +3,13 @@
 // const line = `1
 // 1595862781 1595862785`;
 
-const line = `2
-1595862781 1595862783
-1595862782 1595862784`;
-
 // const line = `2
-// 1595862781 1595862782
-// 1595862783 1595862784`;
+// 1595862781 1595862783
+// 1595862782 1595862784`;
+
+const line = `2
+1595862781 1595862782
+1595862783 1595862784`;
 
 // const line = `3
 // 101 104
@@ -17,13 +17,21 @@ const line = `2
 // 103 104
 // 105 108`;
 
-const result = getResult(line);
-console.log(typeof(result));
+
+function parseLine(line) {
+    return line.split('\n');
+}
+const inputArray = parseLine(line);
+
+
+const result = getResult(inputArray);
 
 console.log(String(result));
 
-function getResult(line) {
-    const parsedLine = parseLine(line);
+
+
+function getResult(array) {
+    const parsedLine = getNumericInput(array);
     let intervals = parsedLine.slice(1);
 
     intervals = sortIntervals(intervals);
@@ -44,10 +52,9 @@ function getResult(line) {
     return findedIntervalsCount + ' ' + findedIntervalsDuration;
 }
 
-function parseLine(line) {
-    const splitLine = line.split('\n');
-    const intervalsCount = Number(splitLine[0]);
-    const intervals = splitLine.slice(1).map(interval => {
+function getNumericInput(array) {    
+    const intervalsCount = Number(array[0]);
+    const intervals = array.slice(1).map(interval => {
         return interval.split(' ').map(elem => Number(elem))
     });
 
