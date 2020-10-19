@@ -66,17 +66,18 @@ function getResult2(inputArray) {
     const intervals = numericInput.slice(1);
     intervals.sort((intA, intB) => intA[0] - intB[0]);
 
-    const intersections = getMultiIntersections(getIntersections(intervals));
+    const intersections = getIntersections(intervals)
+    const multiIntersections = getMultiIntersections(intersections);
 
 
-console.log(intersections);
+console.log(multiIntersections);
 
-    if (intersections.length == 0) {
+    if (multiIntersections.length == 0) {
         intervalsCount = intervals.length;
         intervalsDuration = getIntervalsDuration(intervals);
     } else {
-        intervalsCount = intersections.length;
-        intervalsDuration = getIntervalsDuration(intersections);
+        intervalsCount = multiIntersections.length;
+        intervalsDuration = getIntervalsDuration(multiIntersections);
     }
 
 
@@ -87,8 +88,6 @@ console.log(intersections);
 function getIntersections(intervals) {
     const intersections = [];
     
-    let intersectionsCount = [];
-
     for (let i = 0; i < intervals.length-1; i++) {
         const intA = intervals[i];
         
@@ -106,40 +105,11 @@ function getIntersections(intervals) {
                 count++;
             }                
         }
-        // intersectionsCount.push(count);
-        // console.log(intersectA.length);
-        // if (intersectA.length > 1) {            
-        //     intersections.push(...getIntersections(intersectA));
-        // } else {
-        //     intersections.push(...intersectA);
-        // }   
         if (intersectA.length != 0) {
             intersections.push(intersectA);
         }
-        // if (intersections.length > intervals.length) {
-        //     intersections.push(...getIntersections(intersections));
-        // }
     }
 
-    // const multiIntersections = intersections.filter(intersectionsItem => {
-    //     if (intersectionsItem.length > 1) {
-    //         return true;
-    //     }
-    // });
-    // if (multiIntersections.length == 0) {
-    //     return intersections.reduce((result, intersection) => {
-    //         return [...result, ...intersection];
-    //     }, []);
-    // } else {
-    //     const length = intersections.length;
-    //     multiIntersections.forEach((multiInter) => {
-    //         intersections.push(...getIntersections(multiInter));
-    //     });
-    //     return intersections.slice(length);
-    // }
-
-
-    // intersections.sort((intA, intB) => intA[0] - intB[0]);
     return intersections;
     
 }
@@ -154,7 +124,6 @@ function getMultiIntersections(intersections) {
             multiIntersections.push(...getIntersections(intersect));
         }
     }
-
 
     if (multiIntersections.length == 0) {
         result =  intersections.reduce((result, intersection) => {

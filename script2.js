@@ -1,31 +1,60 @@
-const readline = require('readline');
-const rl = readline.createInterface(process.stdin, process.stdout);
+"use strict";
 
-const inputArray = [];
-let vacancyCount = undefined;
+// const line = `1
+// 1595862781 1595862785`;
 
-rl.on('line', (line) => {
-    if (vacancyCount === undefined) {
-        vacancyCount = line;
-    }    
+// const line = `2
+// 1595862781 1595862783
+// 1595862782 1595862784`;
 
-    inputArray.push(line);
-    
-    if (inputArray.length == (vacancyCount + 1)) {
-        rl.close();
-    }
+// const line = `2
+// 1595862781 1595862782
+// 1595862783 1595862784`;
 
-    // Введенная строка в переменной line, тут можно написать решение
-    // console.log(String(result));
-    // rl.close();
-    // return;
-}).on('close', () => {
-    const result = getResult(inputArray);
-    console.log(String(result));
-    process.exit(0)
-});
+// const line = `3
+// 100 103
+// 101 109
+// 102 104
+// 105 107
+// 108 110
+// 108 110
+// 108 111`;
+
+// const line = `3
+// 100 103
+// 101 102
+// 101 108
+// 102 104
+// 105 107
+// 106 109
+// 106 110`;
+
+const line = `3
+100 103
+101 104
+102 106
+105 107`;
+
+
+
+// ================================================
+function parseLine(line) {
+    return line.split('\n');
+}
+const inputArray = parseLine(line);
+// ================================================
+
+
+const result = getResult(inputArray);
+
+console.log(String(result));
+
+
+
 // 
+// ver-2 ===================================================================
 // 
+
 // getResult2
 function getResult(inputArray) {
     let intervalsCount = 0;
@@ -35,6 +64,9 @@ function getResult(inputArray) {
 
     const intersections = getIntersections(intervals);
     const multiIntersections = getMultiIntersections(intersections);
+
+
+console.log(multiIntersections); // ====================================================
 
     if (multiIntersections.length == 0) {
         intervalsCount = intervals.length;
@@ -107,3 +139,50 @@ function getMultiIntersections(intersections) {
         return [...getMultiIntersections(multiIntersections)];
     }  
 }
+
+
+
+
+
+// 
+// archive
+// 
+// getNonDuplicatedIntervals
+function getNonDuplicatedIntervals(intervals) {
+    const duplicatedIndexes = [];
+
+    const nonDuplicatedIntervals  = intervals.filter((intervalA, indexA) => {        
+        const duplicateIndex = intervals.findIndex((intervalB, indexB) => {
+            if ((indexA != indexB) && isIntervalsEqual(intervalA, intervalB)) {
+                return true;
+            }
+        });
+
+        if (duplicateIndex != -1) {
+            duplicatedIndexes.push(duplicateIndex);
+        }
+
+        if (duplicatedIndexes.includes(indexA)) {
+            return false;
+        }
+
+        return true;
+    });
+
+    return nonDuplicatedIntervals;
+}
+
+// isIntervalsEqual
+function isIntervalsEqual(intA, intB) {
+    if (intA.length != intB.length) {
+        return false;
+    }
+    for (let i = 0; i < intA.length; i++) {
+        if (intA[i] !== intB[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
