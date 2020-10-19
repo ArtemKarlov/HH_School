@@ -16,7 +16,9 @@ const line = `3
 101 108
 102 104
 105 107
-106 109`;
+106 109
+103 103
+106 110`;
 
 // const line = `3
 // 100 103
@@ -65,7 +67,8 @@ function getResult(inputArray) {
 
 console.log(intersections); 
 console.log(multiIntersections); 
-// console.log(getMultiIntersections(multiIntersections)); 
+
+
 
 
     if (multiIntersections.length == 0) {
@@ -121,9 +124,18 @@ function getIntersections(intervals) {
 // getMultiIntersections_v2
 function getMultiIntersections(intersections) {
     const multiIntersections = [];
+    let result;
 
     multiIntersections.push(...getIntersections(intersections));
-    return getNonDuplicatedIntervals(multiIntersections);
+
+    if (multiIntersections.length == 0) {
+        return intersections;
+    }
+    else {
+        result = getNonDuplicatedIntervals(multiIntersections);
+        return [...getMultiIntersections(result)];
+    }
+ 
 
     // for (let intersect of intersections) {
     //     if (intersect.length > 1) {
