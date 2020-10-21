@@ -67,43 +67,80 @@ function getIntervalsDuration(intervals) {
     return intervalsDuration;
 }
 
-// getIntersections
+
+// getIntersections_v2
 function getIntersections(intervals) {
     const intersections = [];
     
     for (let i = 0; i < intervals.length-1; i++) {        
-        const intersect = [];
         for (let j = (i + 1); j < intervals.length; j++) {            
             if (intervals[i][1] >= intervals[j][0]) {
                 const interval = (intervals[i][1] > intervals[j][1]) ? 
                     [intervals[j][0], intervals[j][1]] : 
                     [intervals[j][0], intervals[i][1]];
-                intersect.push(interval);
+                intersections.push(interval);
             }                
-        }
-        if (intersect.length != 0) {
-            intersections.push(intersect);
         }
     }
 
     return intersections;   
 }
 
-// getMultiIntersections
+// getMultiIntersections_v2
 function getMultiIntersections(intersections) {
     const multiIntersections = [];
+    let result;
 
-    for (let intersect of intersections) {
-        if (intersect.length > 1) {
-            multiIntersections.push(...getIntersections(intersect));
+    multiIntersections.push(...getIntersections(intersections));
+
+    if (multiIntersections.length == 0) {
+        return intersections;
+    }
+    else {
+        result = getNonDuplicatedIntervals(multiIntersections);
+        return [...getMultiIntersections(result)];
+    }
+}
+
+// getNonDuplicatedIntervals
+function getNonDuplicatedIntervals(intervals) {
+    const duplicatedIndexes = [];
+
+    const nonDuplicatedIntervals  = intervals.filter((intervalA, indexA) => {        
+        const duplicateIndex = intervals.findIndex((intervalB, indexB) => {
+            if (
+                (indexA != indexB) && 
+                (indexA < indexB) &&
+                isIntervalsEqual(intervalA, intervalB)
+            ) {
+                return true;
+            }
+        });
+
+        if (duplicateIndex != -1) {
+            duplicatedIndexes.push(duplicateIndex);
+        }
+
+        if (duplicatedIndexes.includes(indexA)) {
+            return false;
+        }
+
+        return true;
+    });
+
+    return nonDuplicatedIntervals;
+}
+
+// isIntervalsEqual
+function isIntervalsEqual(intA, intB) {
+    if (intA.length != intB.length) {
+        return false;
+    }
+    for (let i = 0; i < intA.length; i++) {
+        if (intA[i] !== intB[i]) {
+            return false;
         }
     }
 
-    if (multiIntersections.length == 0) {
-        return intersections.reduce((result, intersection) => {
-            return [...result, ...intersection];
-        }, []);
-    } else {
-        return [...getMultiIntersections(multiIntersections)];
-    }  
+    return true;
 }
